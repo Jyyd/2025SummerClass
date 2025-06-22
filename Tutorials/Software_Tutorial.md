@@ -167,7 +167,6 @@
 #include <HTTPClient.h>
 #include <WiFi.h>
 #include <WiFiClient.h>
-#include "esp_task_wdt.h"
 #include <HardwareSerial.h>
 #include <ArduinoJson.h>
 #include <SoftwareSerial.h>
