@@ -127,16 +127,12 @@ flag = True  # bool
 
 ---
 
----
-
 ## 2.7 Python 运算符
 
 * 算术运算符：`+ - * / // % **`
 * 比较运算符：`== != > >= < <=`
 * 逻辑运算符：`and or not`
 * 成员运算：`in`，`not in`
-
----
 
 ---
 
@@ -181,8 +177,6 @@ for i in range(5):
 
 ---
 
----
-
 ## 2.11 Python Number（数字类型）
 
 包括整数（int）、浮点数（float）、复数（complex）：
@@ -215,8 +209,6 @@ now = datetime.now()
 tomorrow = now + timedelta(days=1)
 print(now.strftime("%Y-%m-%d %H:%M:%S"))
 ```
-
----
 
 ---
 
