@@ -125,6 +125,34 @@ flag = True  # bool
 * 从某个模块中导入多个函数,格式为： `from somemodule import firstfunc, secondfunc, thirdfunc`
 * 将某个模块中的全部函数导入，格式为： `from somemodule import *`
 
+- **查看已安装Python库**：
+
+1. **以管理员身份打开 Anaconda Prompt**。
+2. 在命令行中输入：
+
+```
+pip list
+```
+
+即可查看当前环境下已经安装的所有 Python 库及其版本。
+
+---
+
+**注意事项：**
+
+* `pip list` 只能查看当前激活环境中的包。使用 Anaconda 时，建议先用 `conda activate your_env_name` 激活你要查询的环境，再用 `pip list`。
+* 你也可以用 `conda list` 查看 Anaconda 环境下所有用 conda 或 pip 安装的包。
+
+---
+
+**示例：**
+
+```shell
+conda activate myenv   # （可选）先激活你的环境
+pip list               # 查看 pip 安装的所有包
+conda list             # 查看 conda 和 pip 安装的所有包
+```
+
 ---
 
 ## 2.7 Python 运算符
@@ -159,11 +187,7 @@ for i in range(3):
 while x > 0:
     x -= 1
 ```
-
----
-
-## 2.10 Python 循环嵌套与控制语句（break / continue / pass）
-
+Python 循环嵌套与控制语句（break / continue / pass）
 * **break**：提前结束循环
 * **continue**：跳过当次循环
 * **pass**：占位语句，不做任何操作
@@ -177,7 +201,7 @@ for i in range(5):
 
 ---
 
-## 2.11 Python Number（数字类型）
+## 2.10 Python Number（数字类型）
 
 包括整数（int）、浮点数（float）、复数（complex）：
 
@@ -189,7 +213,7 @@ z = 2 + 3j
 
 ---
 
-## 2.12 Python 字符串
+## 2.11 Python 字符串
 
 字符串可以通过索引、切片访问，也支持常用方法如 `split()`、`replace()` 等：
 
@@ -201,7 +225,7 @@ print(s.lower(), s.upper())
 
 ---
 
-## 2.13 Python 列表（List）
+## 2.12 Python 列表（List）
 
 ```python
 from datetime import datetime, timedelta
@@ -212,7 +236,8 @@ print(now.strftime("%Y-%m-%d %H:%M:%S"))
 
 ---
 
-## 2.14 Python 元组（Tuple）
+
+## 2.13 Python 元组（Tuple）
 
 不可变序列类型，适合用于多值返回：
 
@@ -222,7 +247,7 @@ t = (1, 2, 3)
 
 ---
 
-## 2.15 Python 字典（Dictionary）
+## 2.14 Python 字典（Dictionary）
 
 键值对集合，常用于存储结构化信息：
 
@@ -233,7 +258,7 @@ print(d["name"])
 
 ---
 
-## 2.16 Python 日期和时间
+## 2.15 Python 日期和时间
 
 ```python
 from datetime import datetime, timedelta
@@ -243,7 +268,7 @@ print(now.strftime("%Y-%m-%d %H:%M:%S"))
 
 ---
 
-## 2.17 Python 函数
+## 2.16 Python 函数
 
 ```python
 def greet(name):
