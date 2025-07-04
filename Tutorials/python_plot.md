@@ -253,6 +253,7 @@ plt.show()
 ![2](./figures/output2.png)
 ---
 ### 6.3 Python数据可视化更新
+#### 6.3.1 heliutanjie传感器
 ```python
 import pandas as pd
 import numpy as np
@@ -338,6 +339,7 @@ plt.show() # 显示图像
 ```
 ![text](figures/output3.png) ![text](figures/output4.png)
 
+#### 6.3.2 sensor组传感器
 ```python
 import pandas as pd
 import numpy as np
