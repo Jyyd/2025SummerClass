@@ -424,4 +424,89 @@ plt.show() # 显示图像
 ```
 ![alt text](figures/sensor.png) ![alt text](figures/sensor2.png)
 
+
+#### 6.3.3 sezer0703组传感器
+```python
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.dates import DateFormatter
+import matplotlib.dates as mdates
+import matplotlib.ticker as ticker
+
+# 保证负号正常显示
+plt.rcParams['font.family'] = 'Arial' # 设置字体为 Arial
+plt.rcParams['font.size'] = 18 # 设置字体大小
+plt.rcParams['axes.unicode_minus'] = False # 确保负号正常显示
+
+
+# 读取数据
+df = pd.read_csv('./sezer0703.csv', encoding='utf-8-sig')
+df['timestamp'] = pd.to_datetime(df['timestamp']) # 将时间戳列转换为 datetime 类型
+df = df[(df['value'] >= 0)] # 过滤掉负值数据
+df_co2 = df[(df['sensor_type'] == 'CO2 ')].copy() # 注意 CO2 后有一个空格，使用 .copy() 避免警告
+df_ch4 = df[(df['sensor_type'] == 'CH4')].copy() # 注意 CH4 后没有空格，使用 .copy() 避免警告
+
+# 计算滑动平均（平滑曲线）
+window = 60  # 平滑窗口（秒）
+# rolling() 方法计算滑动平均, window 参数指定窗口大小，min_periods=1 确保至少有一个数据点时计算平均值，center=True 使得平均值居中
+df_co2['smooth'] = df_co2['value'].rolling(window, min_periods=10, center=True).mean()
+df_ch4['smooth'] = df_ch4['value'].rolling(window, min_periods=10, center=True).mean()
+
+# 绘制 CO2 数据图
+df_co2_plot = df_co2.copy() # 复制 CO2 数据
+df_co2_plot = df_co2_plot.sort_values(by='timestamp') # 按时间戳排序
+df_co2_plot = df_co2_plot[(df_co2_plot['timestamp'] >= '2025-07-03 16:55:12') & (df_co2_plot['timestamp'] <= '2025-07-03 17:09:36')] # 过滤时间范围
+fig, ax = plt.subplots(figsize=(15, 8), dpi=300)
+ax.plot(df_co2_plot['timestamp'], df_co2_plot['value'],
+        marker='o', linestyle='-', alpha=0.5,  # 设置透明度
+        markersize=8,  # 设置点的大小
+        color='green', label=r'CO$_2$ Raw Value')
+ax.plot(df_co2_plot['timestamp'], df_co2_plot['smooth'],
+        marker='<', linestyle='-', alpha=0.2,  # 设置透明度
+        markersize=8,  # 设置点的大小
+        color='b', label=r'CO$_2$ Smoothed Value')
+ax.axvspan(pd.Timestamp('2025-07-03 17:01:14'), pd.Timestamp('2025-07-03 17:02:58'),
+           color='red', alpha=0.1, label='Special Region 1')
+# ax.axvspan(pd.Timestamp('2025-07-03 16:39:21'), pd.Timestamp('2025-07-03 16:40:10'),
+#            color='purple', alpha=0.1, label='Special Region 2')
+# ax.axvspan(pd.Timestamp('2025-07-03 16:42:37'), pd.Timestamp('2025-07-03 16:43:10'),
+#            color='orange', alpha=0.1, label='Special Region 3')
+ax.set_xlabel('Timestamp')
+ax.set_ylabel('Concentration (ppm)')
+ax.legend(frameon=False, loc='upper right', ncol=3, title='sezer0703: 2025-07-03') # 图例放在右上角
+ax.xaxis.set_major_formatter(DateFormatter('%H:%M:%S')) # 设置 x 轴时间格式
+ax.xaxis.set_major_locator(ticker.MaxNLocator(nbins=20, prune='both')) # 设置 x 轴刻度数量
+ax.set_ylim(0, 1200) # 设置 y 轴范围
+plt.xticks(rotation=90) # 添加 rotation=45 可以避免 x 轴标签重叠
+plt.tight_layout() # 自动调整布局
+plt.show() # 显示图像
+
+
+# 绘制 CH4 数据图
+df_ch4_plot = df_ch4.copy()
+df_ch4_plot = df_ch4_plot.sort_values(by='timestamp') # 按时间戳排序
+df_ch4_plot = df_ch4_plot[(df_ch4_plot['timestamp'] >= '2025-07-03 17:08:00') & (df_ch4_plot['timestamp'] <= '2025-07-03 17:30:00')] # 过滤时间范围
+fig, ax = plt.subplots(figsize=(15, 6), dpi=300) # 设置图像大小和分辨率
+ax.plot(df_ch4_plot['timestamp'], df_ch4_plot['value'], marker='o',
+        markersize=8,  # 设置点的大小
+        linestyle='-', alpha=0.5, color='blue', label=r'CH$_4$ Raw Value') # 绘制原始数据点
+ax.plot(df_ch4_plot['timestamp'], df_ch4_plot['smooth'], marker='*',
+        markersize=8,  # 设置点的大小
+        linestyle='-', alpha=0.2, color='purple', label=r'CH$_4$  Smoothed Value') # 绘制平滑曲线
+ax.axvspan(pd.Timestamp('2025-07-03 17:18:14'), pd.Timestamp('2025-07-03 17:18:54'),
+           color='red', alpha=0.1, label='Special Region 1') # 绘制特殊区域1
+# ax.axvspan(pd.Timestamp('2025-07-03 17:26:56'), pd.Timestamp('2025-07-03 17:27:16'),
+#            color='orange', alpha=0.1, label='Special Region 2') # 绘制特殊区域2
+ax.set_xlabel('Timestamp')
+ax.set_ylabel('Concentration (ppm)')
+ax.legend(frameon=False, loc='upper right', ncol=2, title='sezer0703: 2025-07-03')
+ax.xaxis.set_major_formatter(DateFormatter('%H:%M:%S')) # 设置 x 轴时间格式
+ax.xaxis.set_major_locator(ticker.MaxNLocator(nbins=20, prune='both')) # 设置 x 轴刻度数量
+ax.set_ylim(0, 12000) # 设置 y 轴范围
+plt.xticks(rotation=90) # 添加 rotation=45 可以避免 x 轴标签重叠
+plt.tight_layout() # 自动调整布局
+plt.show() # 显示图像
+```
+![alt text](figures/output5.png) ![alt text](figures/output6.png)
 如需进一步绘图风格美化、统计分析、设备多线程数据生成等进阶功能，请自行学习~
